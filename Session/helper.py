@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.common.exceptions import TimeoutException
 
 
 class ResolveElementException(Exception):
@@ -36,5 +37,9 @@ def resolve_many(driver, wait, xpath):
     try:
         wait.until(ec.presence_of_all_elements_located((By.XPATH, xpath)))
         return driver.find_elements("xpath", xpath)
+    except TimeoutException:
+        print(f"Timeout: The requested element with x-path='{xpath} could not be found! "
+              f"If not necessary, remove this request for performance!")                                                                                                                                                           #logging hier
+        return []
     except Exception as e:
-        raise ResolveElementException(xpath, "The element with x-path='{{{xpath}}} could not be found!", e)
+        raise ResolveElementException(xpath, "The requested element for x-path='{{{xpath}}} could not be found!", e)

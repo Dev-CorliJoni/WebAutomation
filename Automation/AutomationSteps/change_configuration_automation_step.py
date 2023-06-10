@@ -10,3 +10,4 @@ class ChangeConfigurationAutomationStep(BaseStep):
         automation, session = super().__call__(*args, **kwargs)
         configuration = get_configuration(self.configuration)
         automation.configuration = configuration
+

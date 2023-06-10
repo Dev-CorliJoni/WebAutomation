@@ -30,7 +30,7 @@
       "action": "click"
     },
     {
-      "change_configuration": "config.json"
+      "change_configuration": "Scripts/config.json"
     }
   ]
 }
