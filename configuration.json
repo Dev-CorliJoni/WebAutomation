@@ -1,0 +1,36 @@
+{
+  "use_config": true,
+  "webpage": "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAADp_a4dUQUxKUFVZRUc2TzlJMlNEWk9ONzRRV05VMi4u",
+  "controls": {
+    "send_button": "/html/body/div/div/div[1]/div/div/div[3]/div/div/div[2]/div[2]/div/button",
+
+    "q1"   : "//*[@id=\"FormTitleId_titleAriaId\"]/div[2]/span",
+    "q1_a0": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[2]/div/label/span/input",
+    "q1_a1": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[3]/div/label/span/input",
+    "q1_a2": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[4]/div/label/span/input",
+    "q1_a3": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[5]/div/label/span/input",
+    "q1_a4": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[6]/div/label/span/input",
+    "q1_a5": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[7]/div/label/span/input",
+    "q1_a6": "//*[@id=\"question-list\"]/div[2]/div[2]/div/table/tbody/tr/td[8]/div/label/span/input"
+  },
+  "control_collections": {
+    "q1_answers": ["q1_a0", "q1_a1", "q1_a2", "q1_a3", "q1_a4", "q1_a5", "q1_a6"],
+    "all_radios": "//input[@type='radio']",
+    "test": "//input[@type='radio']"
+  },
+  "automation": [
+    {
+      "elements": ["all_radios", "q1"],
+      "selector": "foreach",
+      "action": "click"
+    },
+    {
+      "elements": "all_radios",
+      "selector": "foreach",
+      "action": "click"
+    },
+    {
+      "change_configuration": "config.json"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "use_config": true,
+  "controls": {
+    "Title": "//*[@id='FormTitleId_titleAriaId']/div[2]/span"
+  },
+  "control_collections": {
+    "all_radios": "//input[@type='radio']",
+    "all_checkboxes": "//input[@type='checkbox']",
+    "all_textboxes": "//input"
+  },
+  "automation": [
+    {
+      "element": "Title",
+      "action": "read",
+      "variable": "title"
+    },
+    {
+      "elements": ["all_radios", "all_checkboxes"],
+      "selector": "foreach",
+      "action": "click"
+    },
+    {
+      "elements": "all_textboxes",
+      "selector": "foreach",
+      "action": "write",
+      "value": "$title"
+    }
+  ]
+}
