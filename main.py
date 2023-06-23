@@ -1,19 +1,11 @@
 import os
 
+from helper import get_logger
 from Configuration import get_configuration
 from Automation import Automation
 
-"""
 
-
-class AutomationStepAbbriviationExample:
-
-    def __init__(self, automation_step_data):
-        self.data = automation_step_data
-
-    def run(self):
-        pass  # do stuff
-"""
+logger = get_logger(__name__)
 
 
 def config_generator():
@@ -24,16 +16,22 @@ def config_generator():
     """
     cwd = os.getcwd()
     for filename in filter(lambda file: file.endswith('.json'), os.listdir(cwd)):
-        yield get_configuration(os.path.join(cwd, filename))
+        yield filename, get_configuration(os.path.join(cwd, filename))
+
 
 
 def main():
-
-    for configuration in config_generator():
-        if hasattr(configuration, "webpage"):
-            automation = Automation(configuration)
-            automation.open_webpage()
-            automation.run()
+    for filename, configuration in config_generator():
+        logger.info(f"Configuration('{filename}') is loaded properly.")
+        if hasattr(configuration, "use_config") and getattr(configuration, "use_config") is True:
+            automation = Automation(configuration, filename)
+            try:
+                automation.open_hyperlink()
+                automation.run()
+            except Exception as e:
+                logger.critical(f'Automation failed!\n{automation.get_process_information()}', exc_info=True)
+                automation.close()
+                raise e
 
 
 if __name__ == '__main__':

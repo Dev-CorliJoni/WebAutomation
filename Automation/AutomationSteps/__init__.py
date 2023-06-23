@@ -1,4 +1,3 @@
-from .base_step import BaseStep
 from .change_configuration_automation_step import ChangeConfigurationAutomationStep
 from .element_automation import ElementAutomation
 from .element_collection_automation_step import ElementCollectionAutomationStep

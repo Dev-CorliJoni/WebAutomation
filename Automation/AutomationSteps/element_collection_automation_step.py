@@ -1,10 +1,14 @@
 import random
 
+from selenium.common import ElementNotInteractableException
+
+from helper import get_logger
 from Automation.helper import _has_attributes
-from Automation.AutomationSteps import BaseStep, ElementAutomation
+from Automation.AutomationSteps import ElementAutomation
 
+logger = get_logger(__name__)
 
-class ElementCollectionAutomationStep(BaseStep):
+class ElementCollectionAutomationStep:
     def __init__(self, automation_step_data):
         self.element_names = automation_step_data.elements
         self.selector = automation_step_data.selector
@@ -18,7 +22,7 @@ class ElementCollectionAutomationStep(BaseStep):
             self.value = automation_step_data.value
 
     def __call__(self, *args, **kwargs):
-        automation, session = super().__call__(*args, **kwargs)
+        automation, session = args
 
         # Resolve xpaths to objects
         if type(self.element_names) is str:
@@ -36,14 +40,26 @@ class ElementCollectionAutomationStep(BaseStep):
         else:
             raise Exception(f"[UnexpectedValueType]: Type: {type(self.value)} of Value {self.value} is not accepted!")
 
-        if self.selector == "random":
-            # Random selector only uses the first value in self.value list
-            element = random.choice(elements)
-            ElementAutomation(self.action, self.variable, self.value[0])(element, session)
-        elif self.selector == "foreach":
-            [ElementAutomation(self.action, self.variable, self.value[i])(element, session) for i, element in enumerate(elements)]
-        elif self.selector == "reverse-foreach":
-            [ElementAutomation(self.action, self.variable, self.value[i])(element, session) for i, element in enumerate(reversed(elements))]
+        try:
+            if self.selector == "random":
+                # Random selector only uses the first value in self.value list
+                element = random.choice(elements)
+                ElementAutomation(self.action, self.variable, self.value[0])(element, session)
+            elif self.selector == "foreach":
+                [ElementAutomation(self.action, self.variable, self.value[i])(element, session) for i, element in enumerate(elements)]
+            elif self.selector == "reverse-foreach":
+                [ElementAutomation(self.action, self.variable, self.value[i])(element, session) for i, element in enumerate(reversed(elements))]
+            else:
+                raise Exception(f"[SelectorNotAvailable]: Selector {self.selector} is not supported")
 
-        else:
-            raise Exception(f"[SelectorNotAvailable]: Selector {self.selector} is not supported")
+        except ElementNotInteractableException as e:
+            self.log_elements_not_available_exception()
+
+        except Exception as e:
+            if "[ElementNotEnabled]" in str(e):
+                self.log_elements_not_available_exception()
+            else:
+                raise Exception(f"[ElementAutomationStepFailed] {e.msg}", e)
+
+    def log_elements_not_available_exception(self):
+        logger.error(f"[ElementAutomationStepFailed] The action '{self.action}' on controls with the key '{self.element_names}' could not be executed")

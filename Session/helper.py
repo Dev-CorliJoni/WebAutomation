@@ -2,11 +2,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import TimeoutException
 
+from helper import get_logger
 
-class ResolveElementException(Exception):
-    
-    def __init__(self, xpath, message, *args):
-        super(ResolveElementException, self).__init__(message.format(xpath=xpath), *args)
+logger = get_logger(__name__)
 
 
 def resolve(driver, wait, xpath):
@@ -22,8 +20,7 @@ def resolve(driver, wait, xpath):
         wait.until(ec.presence_of_element_located((By.XPATH, xpath)))
         return driver.find_element("xpath", xpath)
     except Exception as e:
-        raise ResolveElementException(xpath, "The element with x-path='{{{xpath}}} could not be found!", e)
-
+        logger.exception(f"The element with x-path='{xpath}' could not be found!", e)
 
 def resolve_many(driver, wait, xpath):
     """
@@ -42,4 +39,4 @@ def resolve_many(driver, wait, xpath):
               f"If not necessary, remove this request for performance!")                                                                                                                                                           #logging hier
         return []
     except Exception as e:
-        raise ResolveElementException(xpath, "The requested element for x-path='{{{xpath}}} could not be found!", e)
+        logger.exception(f"The element(s) with x-path='{xpath}' could not be found!", e)

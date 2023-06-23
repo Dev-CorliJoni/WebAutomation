@@ -1,13 +1,12 @@
 {
   "use_config": true,
-  "webpage": "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAADp_a4dUQUxKUFVZRUc2TzlJMlNEWk9ONzRRV05VMi4u",
   "controls": {
   },
   "control_collections": {
   },
   "automation": [
     {
-      "change_configuration": "Scripts/config.json"
+      "change_configuration": "Scripts/config-multi-website-test.json"
     }
   ]
 }
