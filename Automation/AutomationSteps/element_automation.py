@@ -8,12 +8,18 @@ from selenium.webdriver.common.keys import Keys
 def _access_control(session, control, function, expected_conditions_function=None):
     #if expected_conditions_function is not None:
     #    session.wait.until(expected_conditions_function((By.XPATH, control.id)))
-    time.sleep(0.1)
+    time.sleep(0.15)
 
     if control.is_enabled():
         function()
     else:
         raise Exception("[ElementNotEnabled]")
+
+
+class Actions:
+    CLICK = "click"
+    READ = "read"
+    WRITE = "write"
 
 
 class ElementAutomation:
@@ -34,9 +40,9 @@ class ElementAutomation:
 
     def _get_action(self):
         actions = {
-            "click": self._click,
-            "read": self._read,
-            "write": self._write
+            Actions.CLICK: self._click,
+            Actions.READ: self._read,
+            Actions.WRITE: self._write
         }
 
         if self.action in actions.keys():

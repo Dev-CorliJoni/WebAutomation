@@ -1,6 +1,7 @@
+import logging
 import os
 
-from helper import get_logger
+from logging_helper import get_logger
 from Configuration import get_configuration
 from Automation import Automation
 
@@ -22,7 +23,7 @@ def config_generator():
 
 def main():
     for filename, configuration in config_generator():
-        logger.info(f"Configuration('{filename}') is loaded properly.")
+
         if hasattr(configuration, "use_config") and getattr(configuration, "use_config") is True:
             automation = Automation(configuration, filename)
             try:
@@ -32,6 +33,8 @@ def main():
                 logger.critical(f'Automation failed!\n{automation.get_process_information()}', exc_info=True)
                 automation.close()
                 raise e
+            finally:
+                logging.shutdown()
 
 
 if __name__ == '__main__':

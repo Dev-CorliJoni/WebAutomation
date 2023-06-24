@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import TimeoutException
 
-from helper import get_logger
+from logging_helper import get_logger
 
 logger = get_logger(__name__)
 

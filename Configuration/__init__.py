@@ -1,3 +1,3 @@
 from .configuration import Configuration
 from .checker import ConfigurationChecker
-from .getter import get_configuration
+from .configuration_loader import get_configuration

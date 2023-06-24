@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+from logging_helper import get_logger
 from Session import Session
 from Automation.AutomationSteps import *
 from Automation.helper import _has_attributes
@@ -15,7 +16,7 @@ def _get_options():
     options.add_experimental_option("detach", True)
     return options
 
-
+logger = get_logger(__name__)
 
 class Automation:
 
@@ -56,6 +57,7 @@ class Automation:
         self.tracker.changed_configuration(self.hyperlink)
         self._session.update_configuration(self.configuration.controls, self.configuration.control_collections)
         self._steps = [Automation._get_automation_step(data) for data in self.configuration.automation]
+        logger.info(f"Configuration('{self.tracker.configuration_filename}') is loaded properly.")
 
     @staticmethod
     def _get_automation_step(automation_step_data):

@@ -1,6 +1,3 @@
-def get_filename(path):
-    return path.split("/")[-1]
-
 class AutomationTracker:
 
     def __init__(self, configuration_path, debug_mode=False):
@@ -15,6 +12,9 @@ class AutomationTracker:
         if self.debug_mode:
             self._website_stack = []
 
+    @property
+    def configuration_filename(self):
+        return self.configuration_path.split("/")[-1]
 
     def changed_configuration(self, website):
         self._website = website
@@ -22,8 +22,7 @@ class AutomationTracker:
         self._current_step = 0
 
         if self.debug_mode:
-            configuration_filename = get_filename(self.configuration_path)
-            self._website_stack.append([configuration_filename, website, self._current_configuration_number, self._current_step])
+            self._website_stack.append([self.configuration_filename, website, self._current_configuration_number, self._current_step])
 
     def step_successful(self):
         self._current_step = self._current_step + 1
@@ -57,7 +56,7 @@ class AutomationTracker:
             website = "No Website" if self._website is None else self._website
             current_step = self._current_step-1 if self._current_step > 0 else 0
 
-            _str = _str + _format.format(config_filename=get_filename(self.configuration_path), website=website,
+            _str = _str + _format.format(config_filename=self.configuration_filename, website=website,
                                          config_number=self._current_configuration_number, step_number=current_step)
         else:
             _str = _str + "|- Nothing started until now "
