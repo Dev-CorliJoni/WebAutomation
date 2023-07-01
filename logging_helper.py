@@ -1,7 +1,6 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
-
 class CustomFormatter(logging.Formatter):
 
     GREY = "\x1b[38;20m"
@@ -40,6 +39,8 @@ def get_logger(name):
     _logger.addHandler(file_handler)
     return _logger
 
+def close_logging():
+    logging.shutdown()
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(CustomFormatter())

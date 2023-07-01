@@ -1,7 +1,9 @@
 import os
 import sys
 import importlib.util
+
 from logging_helper import get_logger
+from Automation.AutomationSteps.BaseAutomationStep import BaseAutomationStep
 
 
 logger = get_logger(__name__)
@@ -20,9 +22,10 @@ def import_module(path):
     return module
 
 
-class ScriptAutomationStep:
+class ScriptAutomationStep(BaseAutomationStep):
     def __init__(self, automation_step_data):
         self.script_path = automation_step_data.script
+        self.validate_filepath(self.script_path)
 
     def __call__(self, *args, **kwargs):
         automation, session = args

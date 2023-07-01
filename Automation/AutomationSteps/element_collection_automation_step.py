@@ -1,8 +1,8 @@
 import random
 
-from selenium.common import ElementNotInteractableException
-
 from logging_helper import get_logger
+from WebInterface import WebInterface
+from WebInterface.helper.special_char import SpecialChar
 from Automation.helper import _has_attributes
 from Automation.AutomationSteps import ElementAutomation, Actions
 
@@ -15,6 +15,12 @@ def get_message(name, selector, action, variable=None, value=None):
         Actions.READ:   f"Read out content(s) of element(s) '{name}' with selector '{selector}' and saved it in '{variable}'.",
         Actions.WRITE:  f"Wrote '{value}' to element(s) '{name}' with selector '{selector}'."
     }[action]
+
+
+class Selector:
+    FOREACH = "foreach"
+    REVERSE_FOREACH = "reverse-foreach"
+    RANDOM = "random"
 
 
 class ElementCollectionAutomationStep:
@@ -34,17 +40,23 @@ class ElementCollectionAutomationStep:
         automation, session = args
 
         elements = self._resolve_elements(session)
-        values = self._get_value(len(elements))
+        values = self._get_value(session, len(elements))
+
+        if len(elements) > len(values):
+            raise Exception(f"[ValueError]: The amount of Values {values} has to be equal, to the amount of elements ({len(elements)})")
+
+        if self.action == Actions.READ:
+            setattr(session.data, self.variable, [])
 
         try:
             run_element_automation = lambda _element, value: ElementAutomation(self.action, self.variable, value)(_element, session)
 
-            if self.selector == "random":
+            if self.selector == Selector.RANDOM:
                 # Random selector only uses the first value in self.value list
                 run_element_automation(random.choice(elements), values[0])
-            elif self.selector == "foreach":
+            elif self.selector == Selector.FOREACH:
                 [run_element_automation(element, values[i]) for i, element in enumerate(elements)]
-            elif self.selector == "reverse-foreach":
+            elif self.selector == Selector.REVERSE_FOREACH:
                 [run_element_automation(element, values[i]) for i, element in enumerate(reversed(elements))]
             else:
                 raise Exception(f"[SelectorNotAvailable]: Selector {self.selector} is not supported")
@@ -52,7 +64,7 @@ class ElementCollectionAutomationStep:
             msg = get_message(self.element_names, self.selector, self.action, self.variable, values)
             logger.info(f"[ElementCollectionAutomationStep] {msg}")
 
-        except ElementNotInteractableException:
+        except WebInterface.ElementNotInteractableException:
             self.log_elements_not_available_exception()
 
         except Exception as e:
@@ -77,7 +89,9 @@ class ElementCollectionAutomationStep:
 
         return elements
 
-    def _get_value(self, elements_count):
+    def _get_value(self, session, elements_count):
+        if self.is_value_resolvable():
+            return getattr(session.data, self.value[1:])
         if type(self.value) is str or self.value is None:
             # The list is multiplied so that the value occurs in it as often as there are elements
             return [self.value] * elements_count
@@ -85,6 +99,17 @@ class ElementCollectionAutomationStep:
             return self.value
         else:
             raise Exception(f"[UnexpectedValueType]: Type: {type(self.value)} of Value {self.value} is not accepted!")
+
+    def is_value_resolvable(self):
+        if self.value is None:
+            return False
+
+        is_value_resolvable = type(self.value) is str
+        is_value_resolvable = is_value_resolvable and self.value.startswith(SpecialChar.DOLLAR) and len(self.value) > 1
+        is_end_marker_inside = any([end_marker in self.value for end_marker in SpecialChar.END_MARKERS if end_marker != SpecialChar.DOLLAR])
+        is_value_resolvable = is_value_resolvable and not is_end_marker_inside
+
+        return is_value_resolvable
 
     def log_elements_not_available_exception(self):
         msg = f"The action '{self.action}' on controls with the key '{self.element_names}' could not be executed!"

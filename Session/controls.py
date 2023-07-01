@@ -1,4 +1,4 @@
-from Session import resolve
+from WebInterface.element_interaction_web_interface import ElementInteractionWebInterface
 
 
 class Controls:
@@ -6,13 +6,13 @@ class Controls:
     Class that contains all mapped HTML elements
     """
 
-    def __init__(self, driver, wait, control_configuration):
+    def __init__(self, web_interface, control_configuration):
         """
         For each name, x-path mapping a attribute is declared in this class, which holds the resolved element of the xpath.
         :param control_configuration: A mapping of names to a x-path
         """
         for name, xpath in control_configuration:
-            setattr(self, name, resolve(driver, wait, xpath))
+            setattr(self, name, ElementInteractionWebInterface.resolve(web_interface, xpath))
 
     def __getitem__(self, item):
         return getattr(self, item)

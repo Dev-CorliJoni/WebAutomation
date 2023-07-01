@@ -9,9 +9,8 @@ class Session:
     In addition, this class contains the data to which all variables defined in this context belong.
     """
 
-    def __init__(self, driver, wait):
-        self._driver = driver
-        self.wait = wait
+    def __init__(self, web_interface):
+        self.web_interface = web_interface
 
         self.data = DataHandler()
         self.controls = None
@@ -20,5 +19,5 @@ class Session:
         self.update_configuration({}, {})
 
     def update_configuration(self, control_configuration, control_collections):
-        self.controls = Controls(self._driver, self.wait, control_configuration)
-        self.control_collections = ControlCollections(self._driver, self.wait, control_collections, self.controls)
+        self.controls = Controls(self.web_interface, control_configuration)
+        self.control_collections = ControlCollections(self.web_interface, control_collections, self.controls)

@@ -1,7 +1,6 @@
-import logging
 import os
 
-from logging_helper import get_logger
+from logging_helper import get_logger, close_logging
 from Configuration import get_configuration
 from Automation import Automation
 
@@ -34,7 +33,7 @@ def main():
                 automation.close()
                 raise e
             finally:
-                logging.shutdown()
+                close_logging()
 
 
 if __name__ == '__main__':

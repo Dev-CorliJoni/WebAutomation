@@ -1,7 +1,7 @@
 class AutomationTracker:
 
-    def __init__(self, configuration_path, debug_mode=False):
-        self.debug_mode = debug_mode
+    def __init__(self, configuration_path, additional_information=False):
+        self.additional_information = additional_information
 
         self.configuration_path = configuration_path
 
@@ -9,7 +9,7 @@ class AutomationTracker:
         self._current_configuration_number = 0
         self._current_step = 0
 
-        if self.debug_mode:
+        if self.additional_information:
             self._website_stack = []
 
     @property
@@ -21,13 +21,13 @@ class AutomationTracker:
         self._current_configuration_number = self._current_configuration_number + 1
         self._current_step = 0
 
-        if self.debug_mode:
+        if self.additional_information:
             self._website_stack.append([self.configuration_filename, website, self._current_configuration_number, self._current_step])
 
     def step_successful(self):
         self._current_step = self._current_step + 1
 
-        if self.debug_mode:
+        if self.additional_information:
             self._update_website_stack(current_step=self._current_step)
 
     def _update_website_stack(self, **kwargs):
@@ -48,7 +48,7 @@ class AutomationTracker:
         if self._current_configuration_number > 0:
             _format = "|-[{config_number}. {config_filename}](Website: {website}) Successfully executed steps: {step_number}.\n"
 
-            if self.debug_mode:
+            if self.additional_information:
 
                 for item in self._website_stack[:-1]:
                     _str = _str + _format.format(config_filename=item[0], website=item[1], config_number=item[2], step_number=item[3])

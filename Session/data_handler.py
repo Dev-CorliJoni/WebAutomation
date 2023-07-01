@@ -1,6 +1,5 @@
 class DataHandler:
 
-    # getattr, iterator etc.
     def __init__(self) -> None:
         self._data = Data()
 

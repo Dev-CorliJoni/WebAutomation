@@ -1,41 +1,29 @@
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-
 from logging_helper import get_logger
 from Session import Session
 from Automation.AutomationSteps import *
 from Automation.helper import _has_attributes
 from Automation.automation_tracker import AutomationTracker
+from WebInterface import WebInterface
 
-
-def _get_options():
-    options = Options()
-    options.add_experimental_option("detach", True)
-    return options
 
 logger = get_logger(__name__)
+
 
 class Automation:
 
     def __init__(self, configuration, configuration_path):
-        self.tracker = AutomationTracker(configuration_path, debug_mode=True) #setto false
-
-        self._configuration = configuration
-        self._driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=_get_options())
-        self._driver.maximize_window()
-
-        self._wait = WebDriverWait(self._driver, 10)
-        self._session = Session(self._driver, self._wait)
         self.hyperlink = None
+        self._configuration = configuration
+
+        self.web_interface = WebInterface()
+        self._session = Session(self.web_interface)
+        self.tracker = AutomationTracker(configuration_path, additional_information=True)
 
         if hasattr(configuration, "hyperlink"):
             self.hyperlink = configuration.hyperlink
 
     def close(self):
-        self._driver.close()
+        self.web_interface.close()
 
     @property
     def configuration(self):
@@ -49,8 +37,8 @@ class Automation:
             self.hyperlink = self._configuration.hyperlink
             self.open_hyperlink()
         else:
-            # Switch to latest window handle, in case Button was clicked and redirected the page
-            self._driver.switch_to.window(self._driver.window_handles[-1])
+            # Switch to the last window handle, because maybe the button was clicked and the page redirected
+            self.web_interface.switch_to_last_window_handle()
             self._load_configuration()
 
     def _load_configuration(self):
@@ -66,18 +54,15 @@ class Automation:
             return ScriptAutomationStep(automation_step_data)
         elif _has_attributes(automation_step_data, "change_configuration"):
             return ChangeConfigurationAutomationStep(automation_step_data)
-        elif _has_attributes(automation_step_data, "element"):
+        elif _has_attributes(automation_step_data, "element", "action"):
             return ElementAutomationStep(automation_step_data)
-        elif _has_attributes(automation_step_data, "elements"):
+        elif _has_attributes(automation_step_data, "elements", "selector", "action"):
             return ElementCollectionAutomationStep(automation_step_data)
         else:
             raise Exception(f"Automation Step could not be parsed: {automation_step_data}")
 
     def open_hyperlink(self):
-        if self.hyperlink is not None:
-            self._driver.get(self.hyperlink)
-        self._driver.switch_to.window(self._driver.window_handles[-1])
-
+        self.web_interface.open(self.hyperlink)
         self._load_configuration()
 
     def run(self):

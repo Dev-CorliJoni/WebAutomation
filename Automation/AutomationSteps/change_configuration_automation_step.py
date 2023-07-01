@@ -1,13 +1,13 @@
-import os
-
+from Automation.AutomationSteps.BaseAutomationStep import BaseAutomationStep
 from Configuration import get_configuration
 from logging_helper import  get_logger
 
 logger = get_logger(__name__)
 
-class ChangeConfigurationAutomationStep:
+class ChangeConfigurationAutomationStep(BaseAutomationStep):
     def __init__(self, automation_step_data):
         self.configuration = automation_step_data.change_configuration
+        self.validate_filepath(self.configuration)
 
     def __call__(self, *args, **kwargs):
         automation, session = args
@@ -17,4 +17,3 @@ class ChangeConfigurationAutomationStep:
 
         automation.tracker.configuration_path = self.configuration
         automation.configuration = configuration
-
