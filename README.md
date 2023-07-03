@@ -158,9 +158,47 @@ The parameter 'session' contains everything that is necessary.
 		- Is an object containing arrays of selenium.webdriver.remote.webelement.WebElement objects as attributes with the name specified in the configuration.
 		- Contains all elements specified in the current configuration.
 
-'session.data.wait'
-		- Is an selenium.webdriver.support.wait.WebDriverWait object.
+'session.web_interface'
+		- Is an object for accessing the driver, WebDriverWait or predefined functionalities for interaction with the web.
 """
 def run(session):
     session.data.variable_name = "Hello World"
+```
+
+## Examples
+
+```json
+{
+  "use_config": true,
+  "hyperlink": "https://www.google.com/",
+  "controls": {
+    "cookies_deny_button": "//button/div[text()='Deny all']",
+		"cookies_accept_button": "//button/div[text()='Accept all']".
+    "search_box": "//textarea[@type='search']"
+  },
+  "control_collections": {
+		"cookie_buttons": ["cookies_deny_button", "cookies_accept_button"]
+  },
+  "automation": [
+    {
+      "script": "C:\\MyScripts\\assign_variables.py"
+    },
+    {
+      "element": "cookies_deny_button",
+      "action": "click"
+    },
+    {
+      "element": "search_box",
+      "action": "write",
+      "value": "Who is $first_name $last_name?[ENTER]"
+    }
+  ]
+}
+```
+
+<b>assign_variables.py</b>
+```python
+def run(session):
+    session.data.first_name = "Max"
+    session.data.last_name = "Mustermann"
 ```
