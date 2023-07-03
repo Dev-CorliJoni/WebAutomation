@@ -125,3 +125,42 @@ To start an automation, a configuration file must exist in the WebAutomation fol
   ]
 }
 ```
+
+[Allowed Special Keys as content of the value attribute](https://www.selenium.dev/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html)
+
+## How to use scripts
+
+The [Configuration](https://github.com/Don-CorliJoni/WebAutomation/edit/master/README.md#configuration) section describes how to call a script.
+```python
+"""
+If you want to use a script in your configuration,
+the method declaration from below is required.
+
+def run(session):
+	pass
+
+The parameter 'session' contains everything that is necessary.
+
+[iterable, subscribtable]
+'session.data'
+		- Is an object that can be used to store data in variables
+		- 1. Example: session.data.x = 3
+		- 2. Example: session.data["x"] = 3
+		- This object does also contain every variable that was assigned inside of the automation of a configuration 
+
+[iterable, subscribtable]
+'session.controls'
+		- Is an object containing selenium.webdriver.remote.webelement.WebElement objects as attributes with the name specified in the configuration.
+		- Contains all elements specified in the current configuration.
+
+[iterable, subscribtable]
+'session.control_configuration'
+		- Is an object containing arrays of selenium.webdriver.remote.webelement.WebElement objects as attributes with the name specified in the configuration.
+		- Contains all elements specified in the current configuration.
+
+'session.data.wait'
+		- Is an selenium.webdriver.support.wait.WebDriverWait object.
+"""
+def run(session):
+    session.data.variable_name = "Hello World"
+```
