@@ -165,7 +165,7 @@ def run(session):
     session.data.variable_name = "Hello World"
 ```
 
-## Examples
+## Example
 
 ```json
 {
@@ -201,4 +201,98 @@ def run(session):
 def run(session):
     session.data.first_name = "Max"
     session.data.last_name = "Mustermann"
+```
+
+## Automation steps examples
+
+### Script Automation Step
+
+```json
+{
+  "script": "C:\Path\to\my\script.py"
+}
+```
+
+### Change Configuration Automation Step
+
+```json
+{
+  "change_configuration": "C:\Path\to\my\config.json"
+}
+```
+
+### Element Automation Step
+
+<b>Click Element</b>
+
+```json
+{
+  "element": "send_button",
+  "action": "click"
+}
+```
+
+<b>Read text of the element and save it in variable question_1</b>
+
+```json
+{
+  "element": "q1",
+  "action": "read",
+  "variable": "question_1"
+}
+```
+
+<b>Write content of `value` to element</b>
+
+```json
+{
+  "element": "q1",
+  "action": "write",
+  "value": "Can I ask a Question?"
+}
+```
+
+### Element Collection Automation Step
+
+
+<b>Click random Element of the `q1_answers` `contol_collection`</b>
+
+```json
+{
+  "elements": "q1_answers",
+  "selector": "random",
+  "action": "click"
+}
+```
+
+<b>Click on each element of the defined array</b>
+
+```json
+{
+  "elements": ["q1_a0", "q1_a1", "q1_a2", "q1_a3", "q1_a4", "q1_a5", "q1_a6"],
+  "selector": "foreach",
+  "action": "click"
+}
+```
+
+<b>Click each element of the defined array in reverse order</b>
+
+```json
+{
+  "elements": ["q1_a0", "q1_a1", "q1_a2", "q1_a3", "q1_a4", "q1_a5", "q1_a6"],
+  "selector": "reverse-foreach",
+  "action": "click"
+}
+```
+
+<b>Click on each element of the defined array</b>
+
+In this special case the <b>merge</b> functionality is used. The `elements` array contains two keys of the `control_collection` section and one key of the `controls` section. The collections are resolved and an array with all controls is created.
+
+```json
+{
+  "elements": ["all_radios", "all_checkboxes", "q1"],
+  "selector": "foreach",
+  "action": "click"
+}
 ```
