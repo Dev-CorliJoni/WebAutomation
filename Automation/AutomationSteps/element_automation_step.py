@@ -4,6 +4,7 @@ from Automation.AutomationSteps import ElementAutomation, Actions
 
 logger = get_logger(__name__)
 
+
 def get_message(name, action, variable=None, value=None):
     """
     Generates a descriptive message based on the element name, action, variable, and value.

@@ -1,5 +1,6 @@
 import os
 
+
 class BaseAutomationStep:
     """
     Base class for automation steps.

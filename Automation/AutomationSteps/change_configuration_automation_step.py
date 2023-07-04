@@ -4,6 +4,7 @@ from logging_helper import get_logger
 
 logger = get_logger(__name__)
 
+
 class ChangeConfigurationAutomationStep(BaseAutomationStep):
     """
     Class representing an automation step to change the configuration.
