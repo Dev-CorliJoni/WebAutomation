@@ -1,4 +1,5 @@
 import random
+
 from logging_helper import get_logger
 from WebInterface import WebInterface
 from WebInterface.helper.special_char import SpecialChar

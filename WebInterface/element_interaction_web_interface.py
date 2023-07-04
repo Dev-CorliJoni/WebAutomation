@@ -5,7 +5,6 @@ from selenium.webdriver.support import expected_conditions as ec
 from logging_helper import get_logger
 from WebInterface.helper.string_replacer import StringReplacer
 
-
 logger = get_logger(__name__)
 
 
@@ -28,8 +27,9 @@ class ElementInteractionWebInterface:
     def resolve(web_interface, xpath):
         """
         Resolves a single HTML element using the provided XPath.
-        - Waits for the element to be present using WebDriverWait.
-        - Returns the element.
+
+        :param web_interface:
+        :param xpath: The xpath of the HTML element
         """
         try:
             web_interface.wait.until(ec.presence_of_element_located((By.XPATH, xpath)))
@@ -41,15 +41,16 @@ class ElementInteractionWebInterface:
     def resolve_many(web_interface, xpath):
         """
         Resolves multiple HTML elements using the provided XPath.
-        - Waits for the elements to be present using WebDriverWait.
-        - Returns a list of elements.
+
+        :param web_interface:
+        :param xpath: The xpath of the HTML element
         """
         try:
             web_interface.wait.until(ec.presence_of_all_elements_located((By.XPATH, xpath)))
             return web_interface.driver.find_elements("xpath", xpath)
         except TimeoutException:
             logger.error(f"Timeout: The requested element with x-path='{xpath} could not be found! "
-                           f"If not necessary, remove this request for performance!")
+                         f"If not necessary, remove this request for performance!")
             return []
         except Exception as e:
             logger.exception(f"The element(s) with x-path='{xpath}' could not be found!", e)

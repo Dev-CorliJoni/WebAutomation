@@ -1,6 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
+
 class CustomFormatter(logging.Formatter):
     """
     Custom log formatter class with colored console output.
@@ -16,11 +17,11 @@ class CustomFormatter(logging.Formatter):
     MESSAGE_FORMAT = SINGLE_LINE_MESSAGE_FORMAT
 
     FORMATS = {
-        logging.DEBUG:      lambda: CustomFormatter.GREY + CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
-        logging.INFO:       lambda: CustomFormatter.GREY + CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
-        logging.WARNING:    lambda: CustomFormatter.YELLOW + CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
-        logging.ERROR:      lambda: CustomFormatter.RED + CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
-        logging.CRITICAL:   lambda: CustomFormatter.BOLD_RED + CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET
+        logging.DEBUG:      lambda: CustomFormatter.GREY +      CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
+        logging.INFO:       lambda: CustomFormatter.GREY +      CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
+        logging.WARNING:    lambda: CustomFormatter.YELLOW +    CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
+        logging.ERROR:      lambda: CustomFormatter.RED +       CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET,
+        logging.CRITICAL:   lambda: CustomFormatter.BOLD_RED +  CustomFormatter.MESSAGE_FORMAT + CustomFormatter.RESET
     }
 
     def format(self, record):
@@ -29,7 +30,7 @@ class CustomFormatter(logging.Formatter):
         Adjusts the message format based on the presence of exception information.
         """
         if record.exc_info is not None:
-            # If exc_info is availale, add linebreaks
+            # If exc_info is available, add linebreaks
             CustomFormatter.MESSAGE_FORMAT = "\n" + CustomFormatter.SINGLE_LINE_MESSAGE_FORMAT + "\n"
         else:
             CustomFormatter.MESSAGE_FORMAT = CustomFormatter.SINGLE_LINE_MESSAGE_FORMAT
@@ -50,11 +51,13 @@ def get_logger(name):
     _logger.addHandler(file_handler)
     return _logger
 
+
 def close_logging():
     """
     Shuts down the logging system.
     """
     logging.shutdown()
+
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(CustomFormatter())

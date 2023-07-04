@@ -13,6 +13,7 @@ class AutomationTracker:
         self.additional_information = additional_information
         self.configuration_path = configuration_path
         self._website = ""
+
         self._current_configuration_number = 0
         self._current_step = 0
 
@@ -39,8 +40,7 @@ class AutomationTracker:
         self._current_step = 0
 
         if self.additional_information:
-            self._website_stack.append([self.configuration_filename, website, self._current_configuration_number,
-                                        self._current_step])
+            self._website_stack.append([self.configuration_filename, website, self._current_configuration_number, self._current_step])
 
     def step_successful(self):
         """
@@ -76,8 +76,7 @@ class AutomationTracker:
 
             if self.additional_information:
                 for item in self._website_stack[:-1]:
-                    _str = _str + _format.format(config_filename=item[0], website=item[1], config_number=item[2],
-                                                 step_number=item[3])
+                    _str = _str + _format.format(config_filename=item[0], website=item[1], config_number=item[2], step_number=item[3])
 
             website = "No Website" if self._website is None else self._website
             current_step = self._current_step - 1 if self._current_step > 0 else 0
