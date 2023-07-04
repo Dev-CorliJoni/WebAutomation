@@ -23,12 +23,12 @@ class Session:
 
         self.update_configuration({}, {})
 
-    def update_configuration(self, control_configuration: dict, control_collections: dict) -> None:
+    def update_configuration(self, control_configuration, control_collections) -> None:
         """
         Updates the configuration of controls and control collections.
 
-        :param control_configuration: A dictionary mapping control names to their XPath.
-        :param control_collections: A dictionary mapping control collection names to either a list of control references or an XPath.
+        :param control_configuration: An object mapping control names to their XPath.
+        :param control_collections: An object mapping control collection names to either a list of control references or an XPath.
         """
         self.controls = Controls(self.web_interface, control_configuration)
         self.control_collections = ControlCollections(self.web_interface, control_collections, self.controls)

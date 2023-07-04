@@ -6,7 +6,7 @@ class Controls:
     Class that contains all mapped HTML elements.
     """
 
-    def __init__(self, web_interface: "WebInterface", control_configuration: dict):
+    def __init__(self, web_interface: "WebInterface", control_configuration):
         """
         Initializes the Controls object.
 
@@ -16,7 +16,7 @@ class Controls:
         :param web_interface: The web interface object.
         :param control_configuration: A mapping of names to XPath strings.
         """
-        for name, xpath in control_configuration.items():
+        for name, xpath in control_configuration:
             setattr(self, name, ElementInteractionWebInterface.resolve(web_interface, xpath))
 
     def __getitem__(self, item):

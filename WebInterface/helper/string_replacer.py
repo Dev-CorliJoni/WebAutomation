@@ -65,7 +65,7 @@ class StringReplacer:
             yield value
 
     @staticmethod
-    def get_elements_by_markers(value: str, start_marker: str, end_markers: list[str], is_end_marker_necessary=True):
+    def get_elements_by_markers(value: str, start_marker: str, end_markers: list, is_end_marker_necessary=True):
         """
         Retrieves elements from the value that are enclosed by start and end markers.
 
@@ -92,7 +92,7 @@ class StringReplacer:
             end_index = StringReplacer._get_end_index(value, end_markers, start_index)
 
     @staticmethod
-    def _get_end_index(value: str, end_markers: list[str], start_index: int) -> int:
+    def _get_end_index(value: str, end_markers: list, start_index: int) -> int:
         """
         Retrieves the index of the first occurrence of an end marker in the value.
 
@@ -107,7 +107,7 @@ class StringReplacer:
         return min(end_marker_indexes, default=len(value))
 
     @staticmethod
-    def _are_end_markers_in_value(value: str, end_markers: list[str], start_index: int) -> bool:
+    def _are_end_markers_in_value(value: str, end_markers: list, start_index: int) -> bool:
         """
         Checks if any of the end markers are present in the value after the start index.
 

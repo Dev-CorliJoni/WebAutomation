@@ -1,7 +1,7 @@
 from WebInterface.element_interaction_web_interface import ElementInteractionWebInterface
 
 
-def _create_control_collection_by_list(web_interface, control_references: list[str], controls):
+def _create_control_collection_by_list(web_interface, control_references, controls):
     """
     Create a collection of controls based on a list of control references.
 
@@ -33,7 +33,7 @@ class ControlCollections:
     This class contains all mappings between a name and a list of controls.
     """
 
-    def __init__(self, web_interface, control_collections: dict, controls):
+    def __init__(self, web_interface, control_collections, controls):
         """
         Initializes the ControlCollections object.
 
@@ -41,7 +41,7 @@ class ControlCollections:
         :param control_collections: A dictionary mapping name and either a list of control_references or an XPath string.
         :param controls: The Session.Controls object that holds every HTML element of interest.
         """
-        for name, control_references in control_collections.items():
+        for name, control_references in control_collections:
             if isinstance(control_references, str):
                 setattr(self, name, list(_create_control_collection_by_str(web_interface, control_references)))
             else:  # List

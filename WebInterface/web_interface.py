@@ -1,3 +1,11 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common import ElementNotInteractableException as _ElementNotInteractableException
+
+
 class WebInterface:
     """
     A interface for Selenium WebDriver functionality.
