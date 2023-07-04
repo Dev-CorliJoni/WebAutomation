@@ -8,7 +8,7 @@ class ConfigurationChecker:
         """    
         :param schema_path: The path to the JSON schema file.
         """
-        self.schema = json.load(schema_file)
+        self.schema = json.load(schema_path)
 
     def validate(self, json_data):
         """
