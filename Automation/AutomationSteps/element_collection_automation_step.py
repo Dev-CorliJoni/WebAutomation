@@ -10,6 +10,16 @@ logger = get_logger(__name__)
 
 
 def get_message(name, selector, action, variable=None, value=None):
+    """
+    Generates a descriptive message based on the element names, selector, action, variable, and value.
+
+    :param name: The name of the elements.
+    :param selector: The selector used to select elements.
+    :param action: The action performed on the elements.
+    :param variable: The variable used for read action (optional).
+    :param value: The value used for the write action (optional).
+    :return: The descriptive message.
+    """
     return {
         Actions.CLICK:  f"Clicked on element(s) '{name}' with selector '{selector}'.",
         Actions.READ:   f"Read out content(s) of element(s) '{name}' with selector '{selector}' and saved it in '{variable}'.",
@@ -24,7 +34,16 @@ class Selector:
 
 
 class ElementCollectionAutomationStep:
+    """
+    Class representing an element collection automation step.
+    """
+
     def __init__(self, automation_step_data):
+        """
+        Initializes an ElementCollectionAutomationStep instance.
+
+        :param automation_step_data: The data for the automation step.
+        """
         self.element_names = automation_step_data.elements
         self.selector = automation_step_data.selector
         self.action = automation_step_data.action
@@ -37,6 +56,12 @@ class ElementCollectionAutomationStep:
             self.value = automation_step_data.value
 
     def __call__(self, *args, **kwargs):
+        """
+        Executes the element collection automation step.
+
+        :param args: Arguments passed to the call.
+        :param kwargs: Keyword arguments passed to the call.
+        """
         automation, session = args
 
         elements = self._resolve_elements(session)
@@ -76,7 +101,12 @@ class ElementCollectionAutomationStep:
                 raise Exception(f"[ElementAutomationStepFailed]", e)
 
     def _resolve_elements(self, session):
-        # Resolve xpaths to objects
+        """
+        Resolves the elements based on the element names in the session.
+
+        :param session: The session containing the controls and control collections.
+        :return: The resolved elements.
+        """
         if type(self.element_names) is str:
             elements = session.control_collections[self.element_names]
         elif type(self.element_names) is list:
@@ -90,6 +120,13 @@ class ElementCollectionAutomationStep:
         return elements
 
     def _get_value(self, session, elements_count):
+        """
+        Gets the value to use for the automation step.
+
+        :param session: The session containing the data.
+        :param elements_count: The number of elements.
+        :return: The value to use.
+        """
         if self.is_value_resolvable():
             return getattr(session.data, self.value[1:])
         if type(self.value) is str or self.value is None:
@@ -101,6 +138,11 @@ class ElementCollectionAutomationStep:
             raise Exception(f"[UnexpectedValueType]: Type: {type(self.value)} of Value {self.value} is not accepted!")
 
     def is_value_resolvable(self):
+        """
+        Checks if the value is resolvable.
+
+        :return: True if the value is resolvable, False otherwise.
+        """
         if self.value is None:
             return False
 
@@ -112,5 +154,8 @@ class ElementCollectionAutomationStep:
         return is_value_resolvable
 
     def log_elements_not_available_exception(self):
+        """
+        Logs an exception message for elements that are not available.
+        """
         msg = f"The action '{self.action}' on controls with the key '{self.element_names}' could not be executed!"
         logger.error(f"[ElementAutomationStepFailed] {msg}")
