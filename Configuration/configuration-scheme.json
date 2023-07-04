@@ -12,29 +12,29 @@
         "controls": {
             "type": "object",
             "additionalProperties": {
-            "type": "string"
+                "type": "string"
             }
         },
         "control_collections": {
             "type": "object",
             "additionalProperties": {
-            "anyOf": [
-                {
-                "type": "string"
-                },
-                {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-                }
-            ]
+                "anyOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                ]
             }
         },
         "automation": {
             "type": "array",
             "items": {
-            "type": "object",
+                "type": "object",
                 "anyOf": [
                     {
                         "properties": {
@@ -57,125 +57,180 @@
                     },
 
                     {
-                        "properties": { 
-                            "elements": {
-                                "anyOf": [
-                                {
-                                    "type": "array",
-                                    "items": {
-                                    "type": "string"
-                                    }
-                                },
-                                {
-                                    "type": "string"
-                                }
-                                ]
-                            },
-                            "selector": {
-                                "enum": ["foreach", "reverse-foreach", "random"]
-                            },
-                            "action": {
-                                "enum": ["click", "read", "write"]
-                            },
-                            "value": {
-                                "type": "string"
-                            },
-                            "variable": {
-                                "type": "string"
-                            }
-                        },
-                        "additionalProperties": false,
                         "allOf": [
                             {
                                 "if": {
-                                "properties": {
-                                    "action": {
-                                    "const": "click"
+                                    "properties": {
+                                        "action": {
+                                            "const": "click"
+                                        }
                                     }
-                                }
                                 },
                                 "then": {
-                                    "required": ["elements", "selector", "action"]
+                                    "anyOf": [
+                                        {
+                                            "properties": {    
+                                                "elements": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    ]
+                                                },
+                                                "selector": {
+                                                    "enum": ["foreach", "reverse-foreach", "random"]
+                                                },
+                                                "action": {
+                                                    "enum": ["click", "read", "write"]
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": ["elements", "selector", "action"]
+                                        },
+                                        {
+                                            "properties": {    
+                                                "element": {
+                                                    "type": "string"
+                                                },
+                                                "action": {
+                                                    "enum": ["click", "read", "write"]
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": ["element", "action"]
+                                        }
+                                    ]                                    
+                                }
+                            },
+                            {
+                                "if": {
+                                    "properties": {
+                                        "action": {
+                                            "const": "write"
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "anyOf": [
+                                        {
+                                            "properties": {    
+                                                "elements": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    ]
+                                                },
+                                                "selector": {
+                                                    "enum": ["foreach", "reverse-foreach", "random"]
+                                                },
+                                                "action": {
+                                                    "enum": ["click", "read", "write"]
+                                                },  
+                                                "value": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": ["elements", "selector", "action", "value"]
+                                        },
+                                        {
+                                            "properties": {    
+                                                "element": {
+                                                    "type": "string"
+                                                },
+                                                "action": {
+                                                    "enum": ["click", "read", "write"]
+                                                },  
+                                                "value": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": ["element", "action", "value"]
+                                        }
+                                    ]                                    
                                 }
                             },
                             {
                                 "if": {
                                 "properties": {
                                     "action": {
-                                    "const": "write"
+                                        "const": "read"
                                     }
                                 }
                                 },
                                 "then": {
-                                    "required": ["elements", "selector", "action", "value"]
+                                    "anyOf": [
+                                        {
+                                            "properties": {
+                                                "elements": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    ]
+                                                },
+                                                "selector": {
+                                                    "enum": ["foreach", "reverse-foreach", "random"]
+                                                },
+                                                "action": {
+                                                    "enum": ["click", "read", "write"]
+                                                },
+                                                "variable": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": ["elements", "selector", "action", "variable"]
+                                        },
+                                        {
+                                            "properties": {    
+                                                "element": {
+                                                    "type": "string"
+                                                },
+                                                "action": {
+                                                    "enum": ["click", "read", "write"]
+                                                },  
+                                                "variable": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "required": ["element", "action", "variable"]
+                                        }
+                                    ]                                       
                                 }
                             },
                             {
                                 "if": {
-                                "properties": {
-                                    "action": {
-                                    "const": "read"
+                                    "properties": {
+                                        "action": {
+                                            "not": {
+                                                "enum": ["click", "read", "write"]
+                                            }
+                                        }
                                     }
-                                }
                                 },
-                                "then": {
-                                    "required": ["elements", "selector", "action", "variable"]
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "properties": {                             
-                            "element": {
-                                "type": "string"
-                            },
-                            "action": {
-                                "enum": ["click", "read", "write"]
-                            },
-                            "value": {
-                                "type": "string"
-                            },
-                            "variable": {
-                                "type": "string"
-                            }
-                        },
-                        "additionalProperties": false,
-                        "allOf": [
-                            {
-                                "if": {
-                                "properties": {
-                                    "action": {
-                                    "const": "click"
-                                    }
-                                }
-                                },
-                                "then": {
-                                    "required": ["element", "action"]
-                                }
-                            },
-                            {
-                                "if": {
-                                "properties": {
-                                    "action": {
-                                    "const": "write"
-                                    }
-                                }
-                                },
-                                "then": {
-                                    "required": ["element", "action", "value"]
-                                }
-                            },
-                            {
-                                "if": {
-                                "properties": {
-                                    "action": {
-                                    "const": "read"
-                                    }
-                                }
-                                },
-                                "then": {
-                                    "required": ["element", "action", "variable"]
-                                }
+                                "then": false                                
                             }
                         ]
                     }
