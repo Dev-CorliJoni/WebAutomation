@@ -1,14 +1,18 @@
 import json
 import jsonschema
 
+from logging_helper import get_logger
+
+logger = get_logger(__name__)
+
 
 class ConfigurationChecker:
 
-    def __init__(self, schema_path):
+    def __init__(self, schema_file):
         """    
         :param schema_path: The path to the JSON schema file.
         """
-        self.schema = json.load(schema_path)
+        self.schema = json.load(schema_file)
 
     def validate(self, json_data):
         """
@@ -18,8 +22,14 @@ class ConfigurationChecker:
         :return: True if the JSON data is valid according to the schema, False otherwise.
         """
         try:
-            jsonschema.validate(json_data, self.schema)
+            jsonschema.validate(instance=json_data, schema=self.schema)
             return True
         except Exception as e:
-            print(f"JSON validation error: {str(e)}")
+            logger.warning(f"JSON validation error: {str(e)}")
             return False
+
+    @staticmethod
+    def validate_single(file, schema_file):
+        json_data = json.load(file)
+        ConfigurationChecker(schema_file).validate(json_data)
+        return json_data
