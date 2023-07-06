@@ -173,11 +173,11 @@ def run(session):
   "hyperlink": "https://www.google.com/",
   "controls": {
     "cookies_deny_button": "//button/div[text()='Deny all']",
-		"cookies_accept_button": "//button/div[text()='Accept all']".
+    "cookies_accept_button": "//button/div[text()='Accept all']",
     "search_box": "//textarea[@type='search']"
   },
   "control_collections": {
-		"cookie_buttons": ["cookies_deny_button", "cookies_accept_button"]
+    "cookie_buttons": ["cookies_deny_button", "cookies_accept_button"]
   },
   "automation": [
     {
@@ -209,7 +209,7 @@ def run(session):
 
 ```json
 {
-  "script": "C:\Path\to\my\script.py"
+  "script": "C:\\Path\\to\\my\\script.py"
 }
 ```
 
@@ -217,7 +217,7 @@ def run(session):
 
 ```json
 {
-  "change_configuration": "C:\Path\to\my\config.json"
+  "change_configuration": "C:\\Path\\to\\my\\config.json"
 }
 ```
 
