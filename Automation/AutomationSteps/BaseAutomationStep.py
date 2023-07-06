@@ -13,5 +13,5 @@ class BaseAutomationStep:
 
         :param path: The path to validate.
         """
-        if not os.path.isfile(path):
+        if not os.path.isfile(os.path.abspath(path)):
             raise Exception(f"Path is invalid '{path}'!")
