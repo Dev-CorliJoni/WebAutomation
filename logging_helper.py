@@ -41,12 +41,6 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-def init_logging():
-    path = "Logs/"
-    if not os.path.exists(path):
-        os.mkdir(path)
-
-
 def get_logger(name):
     """
     Creates and configures a logger object with custom handlers and formatters.
@@ -65,6 +59,10 @@ def close_logging():
     """
     logging.shutdown()
 
+
+path = "Logs/"
+if not os.path.exists(path):
+    os.mkdir(path)
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(CustomFormatter())
