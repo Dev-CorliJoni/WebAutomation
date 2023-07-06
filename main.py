@@ -1,8 +1,8 @@
 import os
 
-from logging_helper import get_logger, close_logging
 from Configuration import get_configuration
 from Automation import Automation
+from logging_helper import get_logger, close_logging
 
 logger = get_logger(__name__)
 

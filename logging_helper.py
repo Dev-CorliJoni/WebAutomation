@@ -1,4 +1,5 @@
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 
 
@@ -58,6 +59,10 @@ def close_logging():
     """
     logging.shutdown()
 
+
+path = "Logs/"
+if not os.path.exists(path):
+    os.mkdir(path)
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(CustomFormatter())
