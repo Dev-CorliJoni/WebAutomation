@@ -1,4 +1,5 @@
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 
 
@@ -38,6 +39,12 @@ class CustomFormatter(logging.Formatter):
         log_fmt = self.FORMATS.get(record.levelno)()
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
+
+
+def init_logging():
+    path = "Logs/"
+    if not os.path.exists(path):
+        os.mkdir(path)
 
 
 def get_logger(name):

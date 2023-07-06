@@ -1,6 +1,6 @@
 import os
 
-from logging_helper import get_logger, close_logging
+from logging_helper import init_logging, get_logger, close_logging
 from Configuration import get_configuration
 from Automation import Automation
 
@@ -20,6 +20,8 @@ def config_generator():
 
 
 def main():
+    init_logging()
+
     for filename, configuration in config_generator():
         # Check if the configuration has the attribute "use_config" and its value is True
         if hasattr(configuration, "use_config") and getattr(configuration, "use_config") is True:
