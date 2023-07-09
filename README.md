@@ -1,7 +1,15 @@
 # WebAutomation
 
 ## How to start
-To start an automation, a configuration file must exist in the WebAutomation folder. An automation is started for each configuration file.
+To start an automation for each configuration file in the current folder.
+```batch
+python main.py
+```
+
+To start an automation for a single configuration file.
+```batch
+python main.py -c C:\Your\configuration.json
+```
 
 ## Configuration
 
