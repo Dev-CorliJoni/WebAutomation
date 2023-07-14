@@ -29,7 +29,7 @@ class ConfigurationChecker:
             return False
 
     @staticmethod
-    def validate_single(file, schema_file):
+    def validate_file(file, schema_file):
         json_data = json.load(file)
         ConfigurationChecker(schema_file).validate(json_data)
         return json_data

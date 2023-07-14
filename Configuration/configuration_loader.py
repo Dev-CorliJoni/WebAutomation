@@ -12,5 +12,6 @@ def get_configuration(path):
     abs_path = os.path.abspath(path)
 
     with open(abs_path, 'r') as f, open(r".\Configuration\configuration-schema.json", 'r') as schema:
-        json_data = ConfigurationChecker.validate_single(f, schema)
+        json_data = ConfigurationChecker.validate_file(f, schema)
+
         return Configuration(**json_data)

@@ -76,6 +76,8 @@ class Automation:
             return ScriptAutomationStep(automation_step_data)
         elif _has_attributes(automation_step_data, "change_configuration"):
             return ChangeConfigurationAutomationStep(automation_step_data)
+        elif _has_attributes(automation_step_data, "input"):
+            return InputAutomationStep(automation_step_data)
         elif _has_attributes(automation_step_data, "element", "action"):
             return ElementAutomationStep(automation_step_data)
         elif _has_attributes(automation_step_data, "elements", "selector", "action"):

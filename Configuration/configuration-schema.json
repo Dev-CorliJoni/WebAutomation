@@ -57,6 +57,29 @@
                     },
 
                     {
+                        "type": "object",
+
+                        "properties": {
+                            "input": {
+                                "anyOf": [
+                                    {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+
+                        "required": ["input"],
+                        "additionalProperties": false
+                    },
+
+                    {
                         "allOf": [
                             {
                                 "if": {

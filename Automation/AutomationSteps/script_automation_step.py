@@ -3,7 +3,7 @@ import sys
 import importlib.util
 
 from logging_helper import get_logger
-from Automation.AutomationSteps.BaseAutomationStep import BaseAutomationStep
+from Automation.AutomationSteps.base_automation_step import BaseAutomationStep
 
 
 logger = get_logger(__name__)

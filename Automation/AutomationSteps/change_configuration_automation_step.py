@@ -1,4 +1,4 @@
-from Automation.AutomationSteps.BaseAutomationStep import BaseAutomationStep
+from Automation.AutomationSteps.base_automation_step import BaseAutomationStep
 from Configuration import get_configuration
 from logging_helper import get_logger
 
