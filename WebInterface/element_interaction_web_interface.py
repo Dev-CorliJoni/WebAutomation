@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as ec
 
@@ -17,11 +18,12 @@ def _access_control(control, function):
     else:
         raise Exception("[ElementNotEnabled]")
 
-
 class ElementInteractionWebInterface:
     """
     A class that provides functionality for interacting with HTML elements.
     """
+
+    KEYS = Keys
 
     @staticmethod
     def resolve(web_interface, xpath):
@@ -86,14 +88,9 @@ class ElementInteractionWebInterface:
     @staticmethod
     def write(session, control, **kwargs):
         """
-        Writes the specified value to the provided control.
-        - Resolves variables and special keys in the value using StringReplacer.
-        - Sends the resolved value to the control.
+        Sends the resolved value to the control.
         """
-        value = kwargs["value"]
-
-        value = StringReplacer.resolve_variables(value, session.data)
-        values = list(StringReplacer.resolve_special_keys(value))
+        values = kwargs["values"]
 
         for value in values:
             _access_control(control, lambda: control.send_keys(value))

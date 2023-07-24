@@ -1,3 +1,4 @@
+from Automation.AutomationSteps.helper.value_resolver import ValueResolver
 from WebInterface import ElementInteractionWebInterface
 from WebInterface.helper.special_char import SpecialChar
 
@@ -68,4 +69,6 @@ class ElementAutomation:
         control = args[0]
         session = args[1]
 
-        self.action_method(session, control, variable=self.variable, value=self.value)
+        values = ValueResolver.resolve(self.value, session.data, ElementInteractionWebInterface.KEYS)
+
+        self.action_method(session, control, variable=self.variable, values=values)
