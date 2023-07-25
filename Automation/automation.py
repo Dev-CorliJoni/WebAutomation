@@ -75,6 +75,7 @@ class Automation:
         automation_steps = (
             (_has_attributes(automation_step_data, "script"), ScriptAutomationStep),
             (_has_attributes(automation_step_data, "change_configuration"), ChangeConfigurationAutomationStep),
+            (_has_attributes(automation_step_data, "print"), PrintAutomationStep),
             (_has_attributes(automation_step_data, "input"), InputAutomationStep),
             (_has_attributes(automation_step_data, "element", "action"), ElementAutomationStep),
             (_has_attributes(automation_step_data, "elements", "selector", "action"), ElementCollectionAutomationStep)
@@ -84,19 +85,6 @@ class Automation:
             return [automation_step for has_attr, automation_step in automation_steps if has_attr][0](automation_step_data)
         except Exception as e:
             raise Exception(f"Automation Step could not be parsed: {automation_step_data}", e)
-
-        #if _has_attributes(automation_step_data, "script"):
-        #    return ScriptAutomationStep(automation_step_data)
-        #elif _has_attributes(automation_step_data, "change_configuration"):
-        #    return ChangeConfigurationAutomationStep(automation_step_data)
-        #elif _has_attributes(automation_step_data, "input"):
-        #    return InputAutomationStep(automation_step_data)
-        #elif _has_attributes(automation_step_data, "element", "action"):
-        #    return ElementAutomationStep(automation_step_data)
-        #elif _has_attributes(automation_step_data, "elements", "selector", "action"):
-        #    return ElementCollectionAutomationStep(automation_step_data)
-        #else:
-        #
 
     def open_hyperlink(self):
         """
