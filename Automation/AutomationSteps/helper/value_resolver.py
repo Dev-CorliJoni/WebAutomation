@@ -70,7 +70,7 @@ class SpecialKeyPart(TextPart):
     def key(self):
         return self.replacement
 
-def _resolve_as_str(method, input_str):
+def _resolve_as_str(escape_method, method, input_str):
     """
     Helper function to resolve input string using the specified method and return the result as a string.
 
@@ -81,7 +81,8 @@ def _resolve_as_str(method, input_str):
     Returns:
         str: The resolved input string.
     """
-    results = list(method([TextPart(input_str)]))
+    results = list(escape_method([TextPart(input_str)]))
+    results = list(method(results))
     return "".join([result.replacement for result in results if isinstance(result, TextPart)])
 
 class ValueResolver:
@@ -146,7 +147,7 @@ class ValueResolver:
             str: The resolved input string with special keys replaced.
         """
         value_resolver = ValueResolver(input_str, None, special_keys)
-        return _resolve_as_str(value_resolver.resolve_special_keys_in_parts, input_str)
+        return _resolve_as_str(value_resolver.resolve_escapes_in_parts, value_resolver.resolve_special_keys_in_parts, input_str)
 
     @staticmethod
     def resolve_variables(input_str, variables_obj):
@@ -161,21 +162,8 @@ class ValueResolver:
             str: The resolved input string with variables replaced.
         """
         value_resolver = ValueResolver(input_str, variables_obj, None)
-        return _resolve_as_str(value_resolver.resolve_variables_in_parts, input_str)
+        return _resolve_as_str(value_resolver.resolve_escapes_in_parts, value_resolver.resolve_variables_in_parts, input_str)
 
-    @staticmethod
-    def resolve_escapes(input_str):
-        """
-        Resolve escape sequences in the input string.
-
-        Args:
-            input_str (str): The input string to be resolved.
-
-        Returns:
-            str: The resolved input string with escape sequences replaced.
-        """
-        value_resolver = ValueResolver(input_str, None, None)
-        return _resolve_as_str(value_resolver.resolve_escapes_in_parts, input_str)
 
     def resolve_special_keys_in_parts(self, input_parts):
         """
