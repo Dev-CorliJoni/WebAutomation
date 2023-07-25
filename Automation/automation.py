@@ -73,10 +73,13 @@ class Automation:
         :raises Exception: If the automation step cannot be parsed.
         """
         automation_steps = (
-            (_has_attributes(automation_step_data, "script"), ScriptAutomationStep),
-            (_has_attributes(automation_step_data, "change_configuration"), ChangeConfigurationAutomationStep),
             (_has_attributes(automation_step_data, "print"), PrintAutomationStep),
             (_has_attributes(automation_step_data, "input"), InputAutomationStep),
+            (_has_attributes(automation_step_data, "copy"), CopyToClipboardAutomationStep),
+
+            (_has_attributes(automation_step_data, "script"), ScriptAutomationStep),
+            (_has_attributes(automation_step_data, "change_configuration"), ChangeConfigurationAutomationStep),
+
             (_has_attributes(automation_step_data, "element", "action"), ElementAutomationStep),
             (_has_attributes(automation_step_data, "elements", "selector", "action"), ElementCollectionAutomationStep)
         )

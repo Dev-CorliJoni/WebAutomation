@@ -1,3 +1,7 @@
+import requests
+from PIL import Image
+from io import BytesIO
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
@@ -13,7 +17,7 @@ def _access_control(control, function):
     If the passed control is enabled, the specified function will be executed.
     """
     if control.is_enabled():
-        function()
+        return function()
     else:
         raise Exception("[ElementNotEnabled]")
 
@@ -72,17 +76,12 @@ class ElementInteractionWebInterface:
         - Otherwise, sets the variable to the text.
         """
         variable = kwargs["variable"]
-        c = control
-
-        if control.text == "":
-            sub_element_with_text_xpath = "//*[not(text()='')]"
-            session.wait.until(ec.presence_of_all_elements_located((By.XPATH, sub_element_with_text_xpath)))
-            c = control.find_element(By.XPATH, sub_element_with_text_xpath)
+        value = ElementInteractionWebInterface.get_content(session, control, type_="text")
 
         if hasattr(session.data, variable) and type(getattr(session.data, variable)) is list:
-            _access_control(c, lambda: getattr(session.data, variable).append(c.text))
+            getattr(session.data, variable).append(value)
         else:
-            _access_control(c, lambda: setattr(session.data, variable, c.text))
+            setattr(session.data, variable, value)
 
     @staticmethod
     def write(session, control, **kwargs):
@@ -93,3 +92,34 @@ class ElementInteractionWebInterface:
 
         for value in values:
             _access_control(control, lambda: control.send_keys(value))
+
+    @staticmethod
+    def get_content(session, control, type_=None):
+        """
+        Gets the content of the control.
+        """
+        text = _access_control(control, lambda :control.text)
+        source = _access_control(control, lambda :control.get_attribute("src"))
+
+        if source is not None and type_ in ("img", None):
+            return Image.open(requests.get(source, stream=True).raw)
+
+        elif type_ in ("text", None):
+            c = control
+
+            if text == "":
+                sub_element_with_text_xpath = "//*[not(text()='')]"
+                session.web_interface.wait.until(ec.presence_of_all_elements_located((By.XPATH, sub_element_with_text_xpath)))
+                c = control.find_element(By.XPATH, sub_element_with_text_xpath)
+
+            return _access_control(c, lambda :c.text)
+
+        elif type_ in ("screenshot",):
+            screenshot_bytes = _access_control(control, lambda: control.screenshot_as_png)
+            return Image.open(BytesIO(screenshot_bytes))
+
+        elif type_ in ("html",):
+            return _access_control(control, lambda: control.get_attribute("innerHTML"))
+
+        elif type_ in ("pdf",):
+            pass
