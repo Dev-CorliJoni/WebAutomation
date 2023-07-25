@@ -239,7 +239,7 @@ class ValueResolver:
                 parts = re.split(r"(\\\\|\\[$[\]])", input_part.text)
 
                 for part in parts:
-                    if "\\" in part:
+                    if any([part.startswith(f"\\{char}") for char in ("\\", "$", "[", "]")]):
                         # If the part contains a backslash, yield it as an EscapedPart
                         yield EscapedPart(part, part[-1])
                     else:
